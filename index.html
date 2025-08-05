@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+      <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <title>Milleilm</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        h1 {font-family: Brush Script MT, cursive; margin:0;}
+        img {border-style: none; border-radius: 0px  0px  10px 0px; margin:0;}
+        #ilm {visibility: hidden; border-style: none;}
+        .a {color: black !important; background-image: linear-gradient(white,lightgray) ; border-radius:5px ; border-style: outset ; font-family: Arial, sans-serif !important; font-size: 15px !important; border-color: darkgray; float: right;}
+        .a:hover {border-style: inset;}
+        #kaart {height: calc(100vh - 30px); width: 100%; margin: 0px; border-style: none; border-radius: 10px 10px 0px 0px;} 
+        @keyframes avateavitus {
+        0% {opacity: 0; visibility: visible}
+        10% {opacity: 1;}
+        90% {opacity: 1;}Ubuntu
+        100% {opacity: 0;}}
+        p {font-family: Arial; margin:0px;}
+        ul {list-style-type: square; font-family: Arial, sans-serif; margin:0;}
+        body {background-color: white; margin: 0; color: black;}
+@media (prefers-color-scheme: dark) {
+  body {
+    color: white;
+ background-color: black;
+  }
+}
+    </style>
+</head>
+<body>
+<span><img id="logo" src="milleilm_logo_uus.png" height=25 width=100 ><a class="a" onclick="ilm(koht[0], koht[1])">Koht õige!</a><a class="a" onclick="window.location.assign('info.html')">Info</a></span>
+<noscript><p>Kasutamiseks on vaja javascripti!</p></noscript>
+<script>
+var koht=[59.436962, 24.753574]
+function kustuta_kupsis() {document.cookie = "a=; expires=Thu, 9 Dec 1970 13:00:00 UTC"; window.location.assign("index.html");}
+function salvesta_asukoht() {
+      var lat = koht[0];
+      var lng = koht[1];
+      const d = new Date();
+       d.setTime(d.getTime() + (60 * 24 * 60 * 60 * 1000));
+       document.cookie = "a="+lat+","+lng+"; expires="+d.toUTCString();
+        window.location.assign("index.html");}
+function ilm(lat, lng) {
+    document.getElementById("kaart").style.height = "0vh";
+    document.getElementById("ilm").style.visibility = "visible";
+    saailm(lat, lng);
+}
+</script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<div id="ilm">
+<div id="ilmainfo"></div>
+<script>
+function saailm(lat, lng) {
+    let spordid = [];
+        fetch("https://api.open-meteo.com/v1/forecast?latitude="+lat+"&longitude="+lng+"&current=temperature_2m,wind_speed_10m,weather_code&daily=temperature_2m_mean,wind_speed_10m_mean,weather_code&timezone=auto")
+      .then(res => res.json())
+      .then(data => {
+        let hoiatus = "";
+        let tuul = data.current.wind_speed_10m;
+        let temp = data.current.temperature_2m;
+        let kood = data.current.weather_code;
+        if ([1,2,3,4].includes(kood)) {
+            hoiatus = '<img src="ilmhea.png" width=25 height=25>';}
+        else {hoiatus = '<img src="ilmhalb.png" width=25 height=25>';}
+        if (document.cookie == "") {document.getElementsByTagName("span")[0].innerHTML = `<img id="logo" src="milleilm_logo_uus.png" height=25 width=100 ><a class='a' onclick='salvesta_asukoht()'>Salv. koht</a><a class="a" onclick="window.location.assign('info.html')">Info</a>`;}
+        spordid.push("<li>Saab kõndida</li>")
+        if (temp > 20) {
+            spordid.push("<li>Saab ujuda</li>")}
+        if (temp > 12 && tuul < 15) {
+            spordid.push("<li>Saab süstaga sõita</li>");}
+        if (temp > 0) {
+            spordid.push("<li>Saab jalgpalli mängida</li>");
+            spordid.push("<li>Saab jalgrattaga sõita</li>");
+            spordid.push("<li>Saab tõukerattaga sõita</li>");
+            spordid.push("<li>Saab batuudil hüppata</li>");}
+        if (temp <= 0) {
+            spordid.push("<li>Saab uisutada</li>")
+            spordid.push("<li>Saab suusatada</li>")
+            spordid.push("<li>Saab lumega mängida</li>")}
+        
+        document.getElementById("ilmainfo").innerHTML += "<h1>Täna</h1>"+hoiatus+"<p>Temperatuur on " + temp + "°C." + " Tuule kiirus on " + tuul + "</p><br><ul>" + spordid.join("") + "</ul>";
+        spordid = [];
+        kood = data.daily.weather_code[1];
+        tuul = data.daily.wind_speed_10m_mean[1];
+        temp = data.daily.temperature_2m_mean[1];
+        if ([1,2,3,4].includes(kood)) {
+            hoiatus = '<img src="ilmhea.png" width=25 height=25>';}
+        else {hoiatus = '<img src="ilmhalb.png" width=25 height=25>';}
+        spordid.push("<li>Saab kõndida</li>")
+        if (temp > 20) {
+            spordid.push("<li>Saab ujuda</li>")}
+        if (temp > 12 && tuul < 15) {
+            spordid.push("<li>Saab süstaga sõita</li>");}
+        if (temp > 0) {
+            spordid.push("<li>Saab jalgpalli mängida</li>");
+            spordid.push("<li>Saab jalgrattaga sõita</li>");
+            spordid.push("<li>Saab tõukerattaga sõita</li>");
+            spordid.push("<li>Saab batuudil hüppata</li>");}
+        if (temp <= 0) {
+            spordid.push("<li>Saab uisutada</li>")
+            spordid.push("<li>Saab suusatada</li>")
+            spordid.push("<li>Saab lumega mängida</li>")}
+        document.getElementById("ilmainfo").innerHTML += "<h1>Homme</h1>"+hoiatus+"<p>Temperatuur on " + temp + "°C." + " Tuule kiirus on " + tuul + "</p><br><ul>" + spordid.join("") + "</ul>";
+        spordid = [];
+        kood = data.daily.weather_code[2];
+        tuul = data.daily.wind_speed_10m_mean[2];
+        temp = data.daily.temperature_2m_mean[2];
+        if ([1,2,3,4].includes(kood)) {
+            hoiatus = '<img src="ilmhea.png" width=25 height=25>';}
+        else {hoiatus = '<img src="ilmhalb.png" width=25 height=25>';}
+        spordid.push("<li>Saab kõndida</li>")
+        if (temp > 20) {
+            spordid.push("<li>Saab ujuda</li>")}
+        if (temp > 12 && tuul < 15) {
+            spordid.push("<li>Saab süstaga sõita</li>");}
+        if (temp > 0) {
+            spordid.push("<li>Saab jalgpalli mängida</li>");
+            spordid.push("<li>Saab jalgrattaga sõita</li>");
+            spordid.push("<li>Saab tõukerattaga sõita</li>");
+            spordid.push("<li>Saab batuudil hüppata</li>");}
+        if (temp <= 0) {
+            spordid.push("<li>Saab uisutada</li>")
+            spordid.push("<li>Saab suusatada</li>")
+            spordid.push("<li>Saab lumega mängida</li>")}
+        document.getElementById("ilmainfo").innerHTML += "<h1>Ülehomme</h1>"+hoiatus+"<p>Temperatuur on " + temp + "°C." + " Tuule kiirus on " + tuul + "</p><br><ul>" + spordid.join("") + "</ul><br>"; 
+      })
+      .catch(err => {
+        document.getElementById("ilmainfo").innerHTML = "<p>Viga!</p>";
+        console.error(err);
+      });}
+</script>
+</div>
+<div id="kaart"></div>
+<script>
+  const kaart = L.map('kaart').setView([59.436962, 24.753574], 7);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(kaart);
+  let marker;
+    marker = L.marker([59.436962, 24.753574]).addTo(kaart);
+  kaart.on('click', function(e) {
+    koht = [e.latlng.lat, e.latlng.lng];
+    let mlng = e.latlng.lng;
+    marker.setLatLng(e.latlng);
+  });
+if (document.cookie != "") {
+    ilm(document.cookie.replaceAll("a=", "").split(",")[0], document.cookie.split(",")[1]);
+document.getElementsByTagName("span")[0].innerHTML=`<img id="logo" src="milleilm_logo_uus.png" height=25 width=100 ><a class="a" onclick="kustuta_kupsis()">Teine koht</a><a class="a" onclick="window.location.assign('info.html')">Info</a>`;}
+</script>
+</body>
+</html>
+
