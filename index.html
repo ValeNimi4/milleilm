@@ -62,11 +62,11 @@ fetch('https://api.open-meteo.com/v1/forecast?latitude='+lat+"&longitude="+lng+"
   })
   .then(info => {
     document.getElementById("ilm").style.animationName = "slaidi";
-    ilmainfo.innerHTML += saailm(lat, lng, '<h1>Hetkel', info.current.temperature_2m, info.current.wind_speed_10m, info.current.weather_code);
-    ilmainfo.innerHTML += saailm(lat, lng, '<h1>Järgmine tund', info.daily.temperature_2m_mean[1], info.daily.wind_speed_10m_mean[1], info.current.weather_code[1]);
-    ilmainfo.innerHTML += saailm(lat, lng, '<h1>Ülejärgmine tund', info.daily.temperature_2m_mean[2], info.daily.wind_speed_10m_mean[2], info.current.weather_code[2]);
-    ilmainfo.innerHTML += saailm(lat, lng, '<h1>Homme', info.daily.temperature_2m_mean[1], info.daily.wind_speed_10m_mean[1], info.current.weather_code[1]);
-    ilmainfo.innerHTML += saailm(lat, lng, '<h1>Ülehomme', info.daily.temperature_2m_mean[2], info.daily.wind_speed_10m_mean[2], info.current.weather_code[2]);})
+    ilmainfo.innerHTML += saailm(lat, lng, '<h1>Hetkel', info.current.temperature_2m, info.current.wind_speed_10m, info.current.weather_code, info.current_units.temperature_2m, info.current_units.temperature_2m, info.current_units.wind_speed_10m);
+    ilmainfo.innerHTML += saailm(lat, lng, '<h1>Järgmine tund', info.daily.temperature_2m_mean[1], info.daily.wind_speed_10m_mean[1], info.current.weather_code[1], info.daily_units.temperature_2m_mean, info.daily_units.wind_speed_10m_mean);
+    ilmainfo.innerHTML += saailm(lat, lng, '<h1>Ülejärgmine tund', info.daily.temperature_2m_mean[2], info.daily.wind_speed_10m_mean[2], info.current.weather_code[2], info.daily_units.temperature_2m_mean, info.daily_units.wind_speed_10m_mean);
+    ilmainfo.innerHTML += saailm(lat, lng, '<h1>Homme', info.daily.temperature_2m_mean[1], info.daily.wind_speed_10m_mean[1], info.current.weather_code[1], info.daily_units.temperature_2m_mean, info.daily_units.wind_speed_10m_mean);
+    ilmainfo.innerHTML += saailm(lat, lng, '<h1>Ülehomme', info.daily.temperature_2m_mean[2], info.daily.wind_speed_10m_mean[2], info.current.weather_code[2], info.daily_units.temperature_2m_mean, info.daily_units.wind_speed_10m_mean);})
   .catch(error => {
     console.error('Viga! ', error);})}
 function geolokatsioon() {
@@ -82,7 +82,7 @@ function pealkiri() {
 	pealkirjanr += 1;
 	document.getElementById("Pealkiri").innerHTML = pealkirjad[pealkirjanr];
 }
-function saailm(lat, lng, tiitel, temp, tuul, kood) {
+function saailm(lat, lng, tiitel, temp, tuul, kood, tempyhik, tuulyhik) {
     let spordid = [];
         let hoiatus = "";
         if ([1,2,3,4].includes(kood)) {
@@ -102,7 +102,7 @@ function saailm(lat, lng, tiitel, temp, tuul, kood) {
             spordid.push("<li>Saab uisutada</li>")
             spordid.push("<li>Saab suusatada</li>")
             spordid.push("<li>Saab lumega mängida</li>")}
-        return tiitel+hoiatus+"</h1><p>Temperatuur on " + temp + "°C." + " Tuule kiirus on " + tuul + "m/s</p><br><ul>" + spordid.join("") + "</ul>";
+        return tiitel+hoiatus+"</h1><p>Temperatuur on " + temp + tempyhik + " Tuule kiirus on " + tuulyhik + "m/s</p><br><ul>" + spordid.join("") + "</ul>";
  }
 setInterval(pealkiri, 2500);
 kaart = L.map("map").setView([58.35, 24.59], 7);
