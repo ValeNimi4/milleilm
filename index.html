@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="et">
 <head>
@@ -23,7 +24,7 @@
         a,a:visited,a:link { color: yellow; font-family: "Comic Relief", system-ui; text-decoration: none;}
         a:hover {text-decoration: underline;}
         #vn {position: static; padding:0; float: right;}
-        #kaart {height: calc(100vh - 30px); width: 100%; margin: 0px; border-style: none; border-radius: 0px;} 
+        #kaart {height: calc(100vh - 30px); width: 100%; margin: 0px; border-style: none; border-radius: 0px;}
         p {font-family: Comic Releif, system-ui; margin:0 40px;  font-family: "Comic Relief", system-ui;
   font-weight: 400;
   font-style: normal; margin: 0 40px;}
@@ -86,8 +87,8 @@ function saailm(lat, lng, tiitel, temp, tuul, kood, tempyhik, tuulyhik) {
     let spordid = [];
         let hoiatus = "";
         if ([1,2,3,4].includes(kood)) {
-            hoiatus = '<img src="ilmhea.png" width=25 height=25>';}
-        else {hoiatus = '<img src="ilmhalb.png" width=25 height=25>';}
+            hoiatus = '<img src="ilmhea.png" width=25 height=25 title="Ilm on ilus.">';}
+        else {hoiatus = '<img src="ilmhalb.png" width=25 height=25 title="Võib sadada vihma, tulla äikest jne">';}
         spordid.push("<li>Saab kõndida</li>")
         if (temp > 20) {
             spordid.push("<li>Saab ujuda</li>")}
@@ -102,7 +103,9 @@ function saailm(lat, lng, tiitel, temp, tuul, kood, tempyhik, tuulyhik) {
             spordid.push("<li>Saab uisutada</li>")
             spordid.push("<li>Saab suusatada</li>")
             spordid.push("<li>Saab lumega mängida</li>")}
-        return tiitel+hoiatus+"</h1><p>Temperatuur on " + temp + tempyhik + " Tuule kiirus on " + tuul +" "+ tuulyhik + "</p><br><ul>" + spordid.join("") + "</ul>";
+        let suvaline = spordid[Math.floor(Math.random() * spordid.length)];
+        suvaline = " <i>"+suvaline.slice(4, suvaline.length - 5)+"</i>";
+        return tiitel+suvaline+"</h1><p>Temperatuur on " + temp + tempyhik + " Tuule kiirus on " + tuul +" "+ tuulyhik + "</p><br><ul>" + spordid.join("") + "</ul>";
  }
 setInterval(pealkiri, 2500);
 kaart = L.map("map").setView([58.35, 24.59], 7);
@@ -116,4 +119,3 @@ if (document.cookie != "") {
 </div>
 </body>
 </html>
-
