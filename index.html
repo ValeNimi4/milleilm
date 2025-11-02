@@ -102,7 +102,7 @@ function saailm(lat, lng, tiitel, temp, tuul, kood, tempyhik, tuulyhik) {
             spordid.push("<li>Saab uisutada</li>")
             spordid.push("<li>Saab suusatada</li>")
             spordid.push("<li>Saab lumega mängida</li>")}
-        return tiitel+hoiatus+"</h1><p>Temperatuur on " + temp + tempyhik + " Tuule kiirus on " tuul + tuulyhik + "m/s</p><br><ul>" + spordid.join("") + "</ul>";
+        return tiitel+hoiatus+"</h1><p>Temperatuur on " + temp + tempyhik + " Tuule kiirus on " + tuul + tuulyhik + "m/s</p><br><ul>" + spordid.join("") + "</ul>";
  }
 setInterval(pealkiri, 2500);
 kaart = L.map("map").setView([58.35, 24.59], 7);
