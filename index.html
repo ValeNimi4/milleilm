@@ -43,10 +43,10 @@ li {margin: 0 40px;}
  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
      crossorigin=""></script>
-<span><img id="logo" src="milleilm_logo_uus.png" height=25 width=100 ><a class="a" href="/"><img id="vn" src="/logo.png" width=100 height=20></a></span>
+<span><img id="logo" src="milleilm_logo_uus.png" height=25 width=100 ><a class="a" href="/"><img id="vn" src="/logo.png" width=100 height=25></a></span>
 <noscript><p>Kasutamiseks on vaja javascripti!</p></noscript>
 <div id="ilm">
-<div id="ilmainfo"><a onclick="document.cookie='a=; expires=expires=Thu, 18 Dec 2013 12:00:00 UTC'">Unusta asukoht</a></div></div>
+<div id="ilmainfo"><a onclick="document.cookie='a=; expires=Thu, 18 Dec 2013 12:00:00 UTC;'">Unusta asukoht</a></div></div>
 <div id="kaart"><h1>Milleilm <i id="Pealkiri">täna</i> on?</h1><p><i style="color: grey">Kui sa valid koha, siis Milleilm salvestab asukoha küpsistena Sinu seadmesse 7 päevaks, kui Sa ei kasuta Milleilma, kui küpsis pole kustutatud, pikeneb külastusel aeg veel 7 päeva.<br>
 Milleilm kasutab kolmandaid osapooli: Github(Pages), Open-Meteo, Leaflet ning OpenStreetMap.</i><br>Vali koht kaartil või <a onclick="geolokatsioon()">vali koht geolokatsiooni kaudu.</a></p><div id="map" style="height: 70vh; z-index: 0;"></div></div>
 <script>function ilm(lat,lng) {
@@ -111,9 +111,8 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(kaart);
 kaart.on("click", function (e) {L.popup().setLatLng([e.latlng.lat, e.latlng.lng]).setContent("<p>"+e.latlng.lat+","+e.latlng.lng+'<br>Kas see koht on õige?<br><a onclick="ilm('+e.latlng.lat+","+e.latlng.lng+')">Jah</a></p>').openOn(kaart)})
-if (document.cookie) {
-  var info = document.cookie.split(";")
-  ilm(info[0].slice(2, info.lenght), info[1])}</script>
+if (document.cookie != "") {
+    ilm(document.cookie.replaceAll("a=", "").split(",")[0], document.cookie.split(",")[1]);}</script>
 </div>
 </body>
 </html>
