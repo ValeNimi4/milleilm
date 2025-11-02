@@ -62,7 +62,7 @@ fetch('https://api.open-meteo.com/v1/forecast?latitude='+lat+"&longitude="+lng+"
   })
   .then(info => {
     document.getElementById("ilm").style.animationName = "slaidi";
-    ilmainfo.innerHTML += saailm(lat, lng, '<h1>Hetkel', info.current.temperature_2m, info.current.wind_speed_10m, info.current.weather_code, info.current_units.temperature_2m, info.current_units.temperature_2m, info.current_units.wind_speed_10m);
+    ilmainfo.innerHTML += saailm(lat, lng, '<h1>Hetkel', info.current.temperature_2m, info.current.wind_speed_10m, info.current.weather_code, info.current_units.temperature_2m, info.current_units.wind_speed_10m);
     ilmainfo.innerHTML += saailm(lat, lng, '<h1>Järgmine tund', info.daily.temperature_2m_mean[1], info.daily.wind_speed_10m_mean[1], info.current.weather_code[1], info.daily_units.temperature_2m_mean, info.current_units.wind_speed_10m);
     ilmainfo.innerHTML += saailm(lat, lng, '<h1>Ülejärgmine tund', info.daily.temperature_2m_mean[2], info.daily.wind_speed_10m_mean[2], info.current.weather_code[2], info.daily_units.temperature_2m_mean, info.current_units.wind_speed_10m);
     ilmainfo.innerHTML += saailm(lat, lng, '<h1>Homme', info.daily.temperature_2m_mean[1], info.daily.wind_speed_10m_mean[1], info.current.weather_code[1], info.daily_units.temperature_2m_mean, info.current_units.wind_speed_10m);
