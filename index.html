@@ -12,28 +12,44 @@
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
       <link href="https://fonts.googleapis.com/css2?family=Comic+Relief&display=swap" rel="stylesheet">
     <style>
+   #laadimine {position: fixed;
+   top: 0; left: 0;
+   width: 100%;
+   height: 100vh;
+  display: grid;
+  place-items: center;
+  z-index: 20;
+  background: linear-gradient(90deg, #000011, #000044);
+  }
+    @keyframes laeb {
+      0% {background-color: lightgreen;transform: rotate(0deg)}
+      25% {background-color: lightblue;}
+      50% {background-color: yellow;}
+      75% {background-color: red;}
+      100% {background-color: orange;transform: rotate(360deg)}}
 	@keyframes slaidi {
-		from {height: 0vh;}
-		to {height: calc(100vh - 30px);}}
+		from {height: 0vh; opacity: 0; visibility: visible}
+		to {opacity: 1; height: 100vh;visibility: visible}}
 		i {color: yellow;}
         h1 {  font-family: "Comic Relief", system-ui;
   font-weight: 400;
-  font-style: normal; margin:0 40px;}
+  font-style: normal;}
         #logo {border-style: none; border-radius: 0px  0px  10px 0px; margin:0;}
- #ilm {overflow-y: auto;animation-fill-mode: forwards;position: fixed; top: 30px; left: 0;width: 100%; height: 0vh; border-style: none;z-index: 100; animation-duration: 2s;}
+ #ilm {box-sizing: border-box;overflow-y: auto;animation-fill-mode: forwards;position: fixed; top: 30px; left: 0;width: 100%; min-height: 100vh; height: auto; border-style: none;z-index: 100; animation-duration: 0.5s; visibility: hidden; padding: 0 40px; padding-bottom: 50px;}
         a,a:visited,a:link { color: yellow; font-family: "Comic Relief", system-ui; text-decoration: none;}
         a:hover {text-decoration: underline;}
         #vn {position: static; padding:0; float: right;}
-        #kaart {height: calc(100vh - 30px); width: 100%; margin: 0px; border-style: none; border-radius: 0px;}
-        p {font-family: Comic Releif, system-ui; margin:0 40px;  font-family: "Comic Relief", system-ui;
+        #kaart {position: fixed; top: 0; left: 0;margin-top: 25px;height: 0vh; width: 100%; margin: 0px; border-style: none; border-radius: 0px; visibility: hidden}
+        #map {height: inherit; z-index: 2; height: 100vh; width: 100%}
+        #info {margin-top: 25px; padding: 0 40px;}
+        #ulemine {font-family: "Comic Relief", system-ui; position: fixed; top: 0; left: 0; z-index: 999; width: 100%; background-color: black;}
+        p {font-family: Comic Releif, system-ui;  font-family: "Comic Relief", system-ui;
   font-weight: 400;
-  font-style: normal; margin: 0 40px;}
+  font-style: normal;}
         ul {list-style-type: disc;   font-family: "Comic Relief", system-ui;
-  font-weight: 400;
-  font-style: normal; margin: 0 40px;}
-        body {background-color: #111144; margin: 0; color: white;}
-li {margin: 0 40px;}
-#ilm {background-color: #111144;}
+  font-style: normal}
+        body {background: linear-gradient(90deg, #000011, #000044); margin: 0; color: white;}
+#ilm {background: linear-gradient(90deg, #000011, #000044);}
 }
     </style>
  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -44,13 +60,36 @@ li {margin: 0 40px;}
  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
      crossorigin=""></script>
-<span><img id="logo" src="milleilm_logo_uus.png" height=25 width=100 ><a class="a" href="/"><img id="vn" src="/logo.svg" width=100 height=25></a></span>
+<span id="ulemine">Mille<i>ilm</i><a class="a" href="/"><img id="vn" src="/logo.svg" width=100 height=25></a></span>
 <noscript><p>Kasutamiseks on vaja javascripti!</p></noscript>
+<div id="laadimine" style="visibility: hidden"><div style="width: 60px; height: 60px; animation: laeb 2.5s linear infinite; border-radius: 20px">
+</div></div>
 <div id="ilm">
-<div id="ilmainfo"><a onclick="document.cookie='a=; expires=Thu, 18 Dec 2013 12:00:00 UTC; path=/'; window.location.assign('');">Unusta asukoht</a></div></div>
-<div id="kaart"><h1>Milleilm <i id="Pealkiri">täna</i> on?</h1><p><i style="color: grey">Kui sa valid koha, siis Milleilm salvestab asukoha küpsistena Sinu seadmesse 7 päevaks, kui Sa ei kasuta Milleilma, kui küpsis pole kustutatud, pikeneb külastusel aeg veel 7 päeva.<br>
-Milleilm kasutab kolmandaid osapooli: Github(Pages), Open-Meteo, Leaflet ning OpenStreetMap.</i><br>Vali koht kaartil või <a onclick="geolokatsioon()">vali koht geolokatsiooni kaudu.</a></p><div id="map" style="height: 70vh; z-index: 0;"></div></div>
-<script>function ilm(lat,lng) {
+<div id="ilmainfo"><a href="">Uuenda</a> <a onclick="document.cookie='a=; expires=Thu, 18 Dec 2013 12:00:00 UTC; path=/'; window.location.assign('');">Unusta asukoht</a><br></div></div>
+<div id="info"><h1>Milleilm <i id="Pealkiri">täna</i> on?</h1><p><u>Rohkem sporti, vähem ekraani!</u><br> Soovitused: Mida õues teha? Sellele saad vastuse Milleilmast. Milleilm arvestab soovitamisel ilma.<br>
+<u>Seadistamine võtab mõni sekund.</u><br> Pole vaja sisselogimist, vali asukoht kaartil või geolokatsiooni kaudu ning näed juba soovitusi.<br>
+<u>Lihtne.</u><br> Pole peidetud nuppe. Pole menüüsid. Asi on mega lihtne!<br>
+<u>Tasuta.</u><br> Pole vaja millegi eest Milleilmas maksta.<br>
+<u>Privaatne.</u><br> Milleilm ise ei kogu andmeid, aga pidage meeles, et
+Milleilm kasutab kolmandaid osapooli: Github(Pages), Open-Meteo, Leaflet ning OpenStreetMap.</i></p>
+<h1>Hakka milleilma kasutama!</h1>
+<p><a onclick="document.getElementById('kaart').style.visibility = 'visible'; document.getElementById('kaart').style.height = '100vh'">Vali koht kaartil</a> VÕI <a onclick="geolokatsioon()">vali koht geolokatsiooni kaudu.</a></p><div id="kaart"><a onclick="document.getElementById('kaart').style.visibility = 'hidden';document.getElementById('kaart').style.height = '0vh'" style="background-color: black; padding: 10px; border-radius: 5px; position: fixed; bottom: 30px; right: 30px; z-index: 10;">Tagasi</a><div id="map"></div></div></div></div>
+<script>
+async function saa_tsitaat() {
+  const cat = await fetch("https://et.wikiquote.org/w/api.php?action=query&list=categorymembers&cmtitle=Kategooria:Sport&cmlimit=500&format=json&origin=*")
+    .then(r => r.json());
+  const pages = cat.query.categorymembers;
+  const page = pages[Math.floor(Math.random() * pages.length)];
+
+  const content = await fetch(`https://et.wikiquote.org/w/api.php?action=query&prop=revisions&rvprop=content&format=json&titles=${encodeURIComponent(page.title)}&origin=*`)
+    .then(r => r.json())
+    .then(d => Object.values(d.query.pages)[0].revisions[0]["*"]);
+
+  const quotes = content.split("\n").filter(l => l.startsWith("* ")).map(l => l.slice(2));
+  return quotes[Math.floor(Math.random() * quotes.length)];
+}
+function ilm(lat,lng) {
+  document.getElementById("laadimine").style.visibility = "visible";
   const d = new Date();
   d.setTime(d.getTime() + (7 * 24 * 60 * 60 * 1000));
 document.cookie = "a="+lat+","+lng+";expires="+d.toUTCString()+";path=/";
@@ -62,16 +101,20 @@ fetch('https://api.open-meteo.com/v1/forecast?latitude='+lat+"&longitude="+lng+"
     return response.json(); // teisendab vastuse JSON-iks
   })
   .then(info => {
-    document.getElementById("ilm").style.animationName = "slaidi";
+        document.getElementById("ilm").style.animationName = "slaidi";
+    (async () => {const tsitaat = await saa_tsitaat();
+    ilmainfo.innerHTML += '<p>Tsitaat <a style="color: white;" href="https://et.wikiquote.org">Vikitsitaadist:</a><br>' + tsitaat.replaceAll("[", "").replaceAll("]", "").replaceAll("|") + "</p>";
     ilmainfo.innerHTML += saailm(lat, lng, '<h1>Hetkel', info.current.temperature_2m, info.current.wind_speed_10m, info.current.weather_code, info.current_units.temperature_2m, info.current_units.wind_speed_10m);
     ilmainfo.innerHTML += saailm(lat, lng, '<h1>Järgmine tund', info.daily.temperature_2m_mean[1], info.daily.wind_speed_10m_mean[1], info.current.weather_code[1], info.daily_units.temperature_2m_mean, info.current_units.wind_speed_10m);
     ilmainfo.innerHTML += saailm(lat, lng, '<h1>Ülejärgmine tund', info.daily.temperature_2m_mean[2], info.daily.wind_speed_10m_mean[2], info.current.weather_code[2], info.daily_units.temperature_2m_mean, info.current_units.wind_speed_10m);
     ilmainfo.innerHTML += saailm(lat, lng, '<h1>Homme', info.daily.temperature_2m_mean[1], info.daily.wind_speed_10m_mean[1], info.current.weather_code[1], info.daily_units.temperature_2m_mean, info.current_units.wind_speed_10m);
-    ilmainfo.innerHTML += saailm(lat, lng, '<h1>Ülehomme', info.daily.temperature_2m_mean[2], info.daily.wind_speed_10m_mean[2], info.current.weather_code[2], info.daily_units.temperature_2m_mean, info.current_units.wind_speed_10m);})
+    ilmainfo.innerHTML += saailm(lat, lng, '<h1>Ülehomme', info.daily.temperature_2m_mean[2], info.daily.wind_speed_10m_mean[2], info.current.weather_code[2], info.daily_units.temperature_2m_mean, info.current_units.wind_speed_10m);})()})
   .catch(error => {
-    console.error('Viga! ', error);})}
+    console.error('Viga! ', error);});
+}
 function geolokatsioon() {
 if ("geolocation" in navigator) {
+  document.getElementById("laadimine").style.visibility = "visible";
   var ilmainfo = document.getElementById("ilmainfo");
   navigator.geolocation.getCurrentPosition((pos) => {ilm(pos.coords.latitude, pos.coords.longitude)
   })} else {alert("Sinu brauser kahjuks ei toeta geolokatsiooni. Äkki on brauser uuendamata?")}}
@@ -87,8 +130,8 @@ function saailm(lat, lng, tiitel, temp, tuul, kood, tempyhik, tuulyhik) {
     let spordid = [];
         let hoiatus = "";
         if ([1,2,3,4].includes(kood)) {
-            hoiatus = '<img src="ilmhea.png" width=25 height=25 title="Ilm on ilus.">';}
-        else {hoiatus = '<img src="ilmhalb.png" width=25 height=25 title="Võib sadada vihma, tulla äikest jne">';}
+            hoiatus = '<img src="ilmhea.png" style="margin: 0px 10px;" width=25 height=25 title="Ilm on ilus.">';}
+        else {hoiatus = '<img src="ilmhalb.png" width=25 height=25 style="margin: 0px 10px;" title="Võib sadada vihma, tulla äikest jne">';}
         spordid.push("<li>Saab kõndida</li>")
         if (temp > 20) {
             spordid.push("<li>Saab ujuda</li>")}
@@ -105,7 +148,7 @@ function saailm(lat, lng, tiitel, temp, tuul, kood, tempyhik, tuulyhik) {
             spordid.push("<li>Saab lumega mängida</li>")}
         let suvaline = spordid[Math.floor(Math.random() * spordid.length)];
         suvaline = " <i>"+suvaline.slice(4, suvaline.length - 5)+"</i>";
-        return tiitel+suvaline+"</h1><p>Temperatuur on " + temp + tempyhik + " Tuule kiirus on " + tuul +" "+ tuulyhik + "</p><br><ul>" + spordid.join("") + "</ul>";
+        return tiitel+suvaline+hoiatus+"</h1><p>Temperatuur on " + temp + tempyhik + " Tuule kiirus on " + tuul +" "+ tuulyhik + "</p><br><ul>" + spordid.join("") + "</ul>";
  }
 setInterval(pealkiri, 2500);
 kaart = L.map("map").setView([58.35, 24.59], 7);
