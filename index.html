@@ -65,7 +65,7 @@
 <div id="laadimine" style="visibility: hidden"><div style="width: 60px; height: 60px; animation: laeb 2.5s linear infinite; border-radius: 20px">
 </div></div>
 <div id="ilm">
-<div id="ilmainfo"><a href="">Uuenda</a> <a onclick="document.cookie='a=; expires=Thu, 18 Dec 2013 12:00:00 UTC; path=/'; window.location.assign('');">Unusta asukoht</a><br></div></div>
+<div id="ilmainfo"><a href="">Uuenda</a> <a onclick="document.cookie='a=; expires=Thu, 18 Dec 2013 12:00:00 UTC;'; window.location.assign('');">Unusta asukoht</a><br></div></div>
 <div id="info"><h1>Milleilm <i id="Pealkiri">täna</i> on?</h1><p><u>Rohkem sporti, vähem ekraani!</u><br> Soovitused: Mida õues teha? Sellele saad vastuse Milleilmast. Milleilm arvestab soovitamisel ilma.<br>
 <u>Seadistamine võtab mõni sekund.</u><br> Pole vaja sisselogimist, vali asukoht kaartil või geolokatsiooni kaudu ning näed juba soovitusi.<br>
 <u>Lihtne.</u><br> Pole peidetud nuppe. Pole menüüsid. Asi on mega lihtne!<br>
@@ -92,7 +92,7 @@ function ilm(lat,lng) {
   document.getElementById("laadimine").style.visibility = "visible";
   const d = new Date();
   d.setTime(d.getTime() + (7 * 24 * 60 * 60 * 1000));
-document.cookie = "a="+lat+","+lng+";expires="+d.toUTCString()+";path=/";
+document.cookie = "a="+lat+","+lng+";expires="+d.toUTCString()+";";
 fetch('https://api.open-meteo.com/v1/forecast?latitude='+lat+"&longitude="+lng+"&current=temperature_2m,wind_speed_10m,weather_code&daily=temperature_2m_mean,wind_speed_10m_mean,weather_code&hourly=temperature_2m,wind_speed_10m,weather_code")
   .then(response => {
     if (!response.ok) {
